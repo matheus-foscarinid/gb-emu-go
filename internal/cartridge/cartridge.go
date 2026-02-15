@@ -89,14 +89,15 @@ func (c *CartridgeContext) getName() string {
 	}
 
 	c.romHeader.titleBytes = [16]byte{}
+	n := 0
 	for i := uint16(0x134); i <= 0x143; i++ {
 		if c.romData[i] == 0x00 {
 			break
 		}
-		c.romHeader.titleBytes[i-0x134] = c.romData[i]
+		c.romHeader.titleBytes[n] = c.romData[i]
+		n++
 	}
-
-	c.title = strings.TrimSpace(string(c.romHeader.titleBytes[:]))
+	c.title = strings.TrimSpace(string(c.romHeader.titleBytes[:n]))
 	return c.title
 }
 
