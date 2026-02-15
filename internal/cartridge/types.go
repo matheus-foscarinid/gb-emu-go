@@ -246,3 +246,32 @@ var NEW_LICENSEE_CODES = map[string]string{
 	"BL": "MTO",
 	"DK": "Kodansha",
 }
+
+var ROM_SIZES = map[byte]string{
+	0x00: "32 KiB",
+	0x01: "64 KiB",
+	0x02: "128 KiB",
+	0x03: "256 KiB",
+	0x04: "512 KiB",
+	0x05: "1 MiB",
+	0x06: "2 MiB",
+	0x07: "4 MiB",
+	0x08: "8 MiB",
+	0x52: "1.1 MiB",
+	0x53: "1.2 MiB",
+	0x54: "1.5 MiB",
+}
+
+var RAM_SIZES = map[byte]string{
+	0x00: "None",
+	0x01: "UNUSED",
+	0x02: "8 KiB",
+	0x03: "32 KiB",
+	0x04: "128 KiB",
+	0x05: "64 KiB",
+}
+
+var DESTINATION_CODES = map[byte]string{
+	0x00: "Japanese",
+	0x01: "Non-Japanese",
+}

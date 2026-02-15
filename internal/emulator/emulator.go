@@ -33,8 +33,6 @@ func Start(romPath string) error {
 		return err
 	}
 
-	fmt.Println("cartridge loaded successfully")
-
 	return runLoop()
 }
 
