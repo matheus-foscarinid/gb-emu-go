@@ -16,7 +16,7 @@ type CartridgeHeader struct {
 	// 0134-0143 title in upper ASCII
 	titleBytes [16]byte
 	// 0144–0145: new licensee code
-	newLicenseCode uint16
+	newLicenseCode [2]byte
 	// 0146: SGB flag
 	sgbFlag byte
 	// 0147: cartridge type
@@ -58,7 +58,7 @@ func New(filename string) *CartridgeContext {
 func buildCartridgeHeader(romData []byte) CartridgeHeader {
 	return CartridgeHeader{
 		titleBytes:      [16]byte(romData[0x134:0x144]),
-		newLicenseCode:  uint16(romData[0x144])<<8 | uint16(romData[0x145]),
+		newLicenseCode:  [2]byte{romData[0x144], romData[0x145]},
 		cartType:        romData[0x147],
 		romSize:         romData[0x148],
 		ramSize:         romData[0x149],
@@ -114,9 +114,8 @@ func Load(romPath string) error {
 	fmt.Println("ROM Size:", ROM_SIZES[ctx.romHeader.romSize])
 	fmt.Println("RAM Size:", RAM_SIZES[ctx.romHeader.ramSize])
 	fmt.Println("Destination Code:", DESTINATION_CODES[ctx.romHeader.destCode])
-	newLicenseKey := string([]byte{byte(ctx.romHeader.newLicenseCode >> 8), byte(ctx.romHeader.newLicenseCode)})
 	fmt.Println("Old Licensee Code:", OLD_LICENSEE_CODES[ctx.romHeader.oldLicenseeCode])
-	fmt.Println("New Licensee Code:", NEW_LICENSEE_CODES[newLicenseKey])
+	fmt.Println("New Licensee Code:", NEW_LICENSEE_CODES[string(ctx.romHeader.newLicenseCode[:])])
 	fmt.Println("Version:", ctx.romHeader.version)
 	fmt.Println("--------------------------------")
 
