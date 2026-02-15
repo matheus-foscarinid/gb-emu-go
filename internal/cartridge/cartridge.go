@@ -69,6 +69,20 @@ func buildCartridgeHeader(romData []byte) CartridgeHeader {
 	}
 }
 
+func runChecksumValidation() error {
+	checksum := int8(0)
+	for i := uint16(0x0134); i <= 0x014C; i++ {
+		checksum = checksum - int8(ctx.romData[i]) - 1
+	}
+
+	if checksum != int8(ctx.romHeader.checksum) {
+		return fmt.Errorf("checksum validation failed")
+	}
+
+	fmt.Println("Checksum validation passed")
+	return nil
+}
+
 func (c *CartridgeContext) getName() string {
 	if c.title != "" {
 		return c.title
@@ -119,5 +133,5 @@ func Load(romPath string) error {
 	fmt.Println("Version:", ctx.romHeader.version)
 	fmt.Println("--------------------------------")
 
-	return nil
+	return runChecksumValidation()
 }
