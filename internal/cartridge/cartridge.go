@@ -5,6 +5,8 @@ import (
 	"io"
 	"os"
 	"strings"
+
+	"github.com/matheus-foscarinid/gb-emu-go/internal/common"
 )
 
 // https://gbdev.io/pandocs/The_Cartridge_Header.html
@@ -135,4 +137,21 @@ func Load(romPath string) error {
 	fmt.Println("--------------------------------")
 
 	return runChecksumValidation()
+}
+
+func Read(address uint16) (byte, error) {
+	if (ROM_TYPES[ctx.romHeader.cartType] != "ROM ONLY") {
+		return 0, common.NotImplemented()
+	}
+
+	return ctx.romData[address], nil
+}
+
+func Write(address uint16, value byte) error {
+	if (ROM_TYPES[ctx.romHeader.cartType] != "ROM ONLY") {
+		return common.NotImplemented()
+	}
+
+	// as it's only read-only, we don't need to do anything
+	return nil
 }
